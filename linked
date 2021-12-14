@@ -1,0 +1,312 @@
+//Link to the list of questions - https://www.geeksforgeeks.org/top-20-linked-list-interview-question/
+
+
+// Given a Linked List of size N, where every node represents a sub-linked-list and contains two pointers:
+(i) a next pointer to the next node,
+(ii) a bottom pointer to a linked list where this node is head.
+Each of the sub-linked-list is in sorted order.
+Flatten the Link List such that all the nodes appear in a single level while maintaining the sorted order. 
+Note: The flattened list will be printed using the bottom pointer instead of next pointer.
+code :
+Node* flatten(Node* root)
+{
+   // Your code here
+   if(root == NULL || root->next == NULL) return NULL;
+   return merge(root,root->next); 
+   
+}
+Node* merge(Node* a,Node* b){
+    if(a == NULL) return b;
+    if(b == NULL) return a;
+    Node* result;
+    if(a->data < b->data){
+        result = a;
+        result->bottom = merge(a->bottom,b);
+    }
+    else if(a->data > b->data){
+        result = b;
+        result->bottom = merge(a,b->bottom);
+    }
+    result->next = NULL;
+return result;
+}
+// Delete Middle of Linked List
+Node* deleteMid(Node* head)
+{
+    // Your Code Here
+    int count = 0;
+    Node* temp = head;
+    while(temp){
+        temp = temp->next;
+        count++;
+    }
+    int i =0;
+    temp = head;
+    Node* p;
+    while(i<(count/2)){
+        p = temp;
+        temp = temp->next;
+        
+        i++;
+    }
+    p->next = temp->next;
+    temp->next = NULL;
+    free(temp);
+return head;
+}
+//Finding middle element in a linked list
+class Solution
+{
+    int getMiddle(Node head)
+    {
+         // Your code here.
+        Node temp = head;
+        int count =0 ;
+        while(temp!=null){
+            count += 1;
+            temp = temp.next;}
+        temp = head;
+        int i=0;
+        while(i<count/2){
+            temp = temp.next;
+            i++;
+        }
+         
+    return temp.data;
+    }
+}
+//Remove duplicate element from sorted Linked List
+Node *removeDuplicates(Node *head)
+{
+ // your code goes here
+ if(head == NULL || head->next == NULL) return head;
+ Node* temp = head;
+ Node* p;
+ while(temp->next!=NULL){
+     if(temp->data == temp->next->data){
+         
+         p = temp->next->next;
+         free(temp->next);
+         temp->next = p;
+     }
+     else
+       temp = temp->next;
+ }
+return head;
+}
+//Add 1 to a number represented as linked list
+class Solution
+{
+    public:
+    Node* reverse(Node* head){
+        Node* curr = head;
+        Node* prev = NULL;
+        Node* next = NULL;
+        while(curr != NULL){
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+    return prev;
+    }
+    Node* find_carry(Node* head){
+      Node* result = head;
+      Node* temp;
+      int carry = 1,sum;
+      while(head != NULL){
+          sum = carry + head->data;
+          carry = (sum >= 10)?1 : 0;
+          sum = sum % 10;
+          head->data = sum;
+          temp = head;
+          head = head->next;
+      }
+      if(carry > 0)
+        temp->next = new Node(carry);
+    return result;
+      
+    }
+    
+    Node* addOne(Node *head) 
+    {
+        // Your Code here
+        // return head of list after adding one
+        head = reverse(head);
+        
+        head = find_carry(head);
+    return reverse(head);
+       
+    }
+};
+
+
+//Reverse a Linked List in groups of given size.
+class Solution
+{
+    public static Node reverse(Node node, int k)
+    {
+        //Your code here
+          // Complete this method
+        
+         Node prev = null;
+         Node next = null;
+         Node curr = node;
+         int count = 0;
+         while(curr!=null && count<k){
+             next = curr.next;
+             curr.next = prev;
+             prev = curr;
+             curr = next;
+             count++;
+         }
+         if(next != null)
+            node.next = reverse(next,k);
+    return prev;
+     //Detect Loop in linked list
+    class Solution {
+    //Function to check if the linked list has a loop.
+    public static boolean detectLoop(Node head){
+        // Add code here
+        HashSet<Node> hm = new HashSet<Node>();
+        while(head!=null){
+            if(hm.contains(head))
+               return true;
+            else
+            hm.add(head);
+        head = head.next;
+        }
+    return false;
+    }
+}
+//Remove loop in Linked List
+class Solution
+{
+    //Function to remove a loop in the linked list.
+    public static void removeLoop(Node head){
+        // code here
+        // remove the loop without losing any nodes
+        HashSet<Node> hm = new HashSet<Node>();
+        Node temp = head;
+        while(temp!=null){
+            if(hm.contains(temp.next))
+               temp.next = null;
+            else
+              hm.add(temp);
+        temp = temp.next;
+        }
+    }
+}
+    }
+}
+//Nth node from end of linked list
+class GfG
+{
+    //Function to find the data of nth node from the end of a linked list.
+   
+    int getNthFromLast(Node head, int n)
+    {
+    	// Your code here
+    	if(head == null) return -1;
+    	Node temp = head;
+    	int count = 1;
+    	while(temp!=null){
+    	    count++;
+    	    temp = temp.next;
+    	}
+    	if(n >= count) return -1;
+    	temp = head;
+    	count = count-n;
+    	int i=1;
+    	while(i < count && temp!=null){
+    	      i++;
+    	    temp = temp.next;
+    	}
+    return temp.data;	
+    }
+  // Check if Linked List is Palindrome 
+  class Solution
+{
+    //Function to check whether the list is palindrome.
+    Node reverse(Node head){
+        Node curr = head;
+        Node prev = null;
+        Node next = null;
+        while(curr!=null){
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+    return prev;
+    }
+    boolean isPalindrome(Node head) 
+    {
+        //Your code here
+        Node first = head;
+        Node second = head;
+        while(first!=null && first.next!=null){
+             second = second.next;
+            first = first.next.next;
+           
+        }
+    
+        second = reverse(second);
+        first = head;
+        while(second!=null && first!=null){
+            if(first.data != second.data)
+                return false;
+        first = first.next;
+        second = second.next;
+        }
+    return true;
+    }    
+}
+//Delete N nodes after M nodes of a linked list 
+class Solution
+{
+    public:
+    void linkdelete(struct Node  *head, int M, int N)
+    {
+        //Add code here
+        if(head == NULL) return;
+        Node* temp = head;
+        while(temp){
+            int count1 = 1;
+            while(temp &&count1<M){
+                temp = temp->next;
+                count1++;
+            }
+            if(!temp) break;
+            Node* prev = temp;
+            temp = temp->next;
+            int count2=0;
+            while(temp && count2<N){
+                count2++;
+                temp=temp->next;
+            }
+            prev->next = temp;
+        }
+        
+    }
+};
+//Reverse a linked list
+class Solution
+{
+    public:
+    //Function to reverse a linked list.
+    struct Node* reverseList(struct Node *head)
+    {
+        struct Node *prev=NULL,*cur=head,*last=NULL;
+        while(cur->next!=NULL){
+              last = cur->next;
+              cur->next = prev;
+              prev = cur;
+              cur = last;
+        }
+        cur->next = prev;
+    return cur;
+    }
+    
+};
+ 
